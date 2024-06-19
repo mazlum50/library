@@ -1,6 +1,12 @@
 package org.example;
 
-public class Book {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Book   implements Serializable{
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final String title;
     private final String author;
     private final String isbn;
@@ -12,25 +18,18 @@ public class Book {
         this.isbn = isbn;
         this.available = true;
     }
-
-    // Getters
     public String getTitle() {
         return title;
     }
-
     public String getAuthor() {
         return author;
     }
-
     public String getIsbn() {
         return isbn;
     }
-
     public boolean isAvailable() {
         return available;
     }
-
-
     public void toggleAvailability() {
         available = !available;
     }

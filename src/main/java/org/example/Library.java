@@ -1,32 +1,26 @@
 package org.example;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
-    private final List<Book> books;
-
-    public Library() {
+    private List<Book> books;
+    private final String inventoryFilePath;
+    public Library(String inventoryFilePath) {
         this.books = new ArrayList<>();
+        this.inventoryFilePath = inventoryFilePath;
+        loadInventory();
     }
-
     public void addBook(Book book) {
         books.add(book);
-        System.out.println("Book added successfully: " + book.getTitle());
+        saveInventory();
     }
 
     public void removeBook(String isbn) {
-        for (Book book : books) {
-            if (book.getIsbn().equals(isbn)) {
-                books.remove(book);
-                System.out.println("Book removed successfully: " + book.getTitle());
-                return;
-            }
-        }
-        System.out.println("Book with ISBN " + isbn + " not found.");
+        books.removeIf(book -> book.getIsbn().equals(isbn));
+        saveInventory(); // Save inventory after removing a book
     }
-
-    // Method to find books by title
     public List<Book> findBooksByTitle(String title) {
         List<Book> foundBooks = new ArrayList<>();
         for (Book book : books) {
@@ -66,14 +60,14 @@ public class Library {
             if (book.getIsbn().equals(isbn)) {
                 if (book.isAvailable()) {
                     book.toggleAvailability();
-                    System.out.println("Book borrowed successfully: " + book.getTitle());
+                    saveInventory(); // Save inventory after borrowing a book
                 } else {
                     System.out.println("Book with ISBN " + isbn + " is not available for borrowing.");
                 }
                 return;
             }
         }
-        System.out.println("Book with ISBN " + isbn + " not found.");
+        System.out.println("Book with ID " + isbn + " not found.");
     }
 
     public void returnBook(String isbn) {
@@ -81,7 +75,7 @@ public class Library {
             if (book.getIsbn().equals(isbn)) {
                 if (!book.isAvailable()) {
                     book.toggleAvailability();
-                    System.out.println("Book returned successfully: " + book.getTitle());
+                    saveInventory(); // Save inventory after returning a book
                 } else {
                     System.out.println("Book with ISBN " + isbn + " is already available.");
                 }
@@ -89,5 +83,26 @@ public class Library {
             }
         }
         System.out.println("Book with ISBN " + isbn + " not found.");
+    }
+
+    private void loadInventory() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(inventoryFilePath))) {
+            books = (List<Book>) ois.readObject();
+            System.out.println("Inventory loaded successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("No inventory file found. Starting with an empty inventory.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error loading inventory: " + e.getMessage());
+        }
+    }
+
+    // Method to save inventory to file
+    private void saveInventory() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(inventoryFilePath))) {
+            oos.writeObject(books);
+            System.out.println("Inventory saved successfully.");
+        } catch (IOException e) {
+            System.out.println("Error saving inventory: " + e.getMessage());
+        }
     }
 }

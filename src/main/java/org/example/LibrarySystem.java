@@ -4,11 +4,12 @@ import java.util.Scanner;
 
 public class LibrarySystem {
     private final Library library;
+    private static final String INVENTORY_FILE_PATH = "data.json";
     private final Scanner scanner;
     private boolean isLibrarian;
 
     public LibrarySystem() {
-        this.library = new Library();
+        this.library = new Library(INVENTORY_FILE_PATH);
         this.scanner = new Scanner(System.in);
         this.isLibrarian = false;
     }
@@ -33,12 +34,13 @@ public class LibrarySystem {
         System.out.print("Enter your choice: ");
     }
 
+    // Method to handle user inputs and actions
     public void handleUserInput() {
         int choice;
         do {
             displayMenu();
             choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); // Consume newline character after nextInt()
 
             switch (choice) {
                 case 1:
@@ -87,6 +89,7 @@ public class LibrarySystem {
         } while (choice != 0);
     }
 
+    // Method to switch user role between librarian and user
     private void switchUserRole() {
         isLibrarian = !isLibrarian;
         if (isLibrarian) {
@@ -96,6 +99,7 @@ public class LibrarySystem {
         }
     }
 
+    // Method to add a new book
     private void addBook() {
         System.out.print("Enter title of the book: ");
         String title = scanner.nextLine();
@@ -123,6 +127,7 @@ public class LibrarySystem {
         displayBooks(foundBooks);
     }
 
+    // Method to search for books by author
     private void searchByAuthor() {
         System.out.print("Enter author to search: ");
         String author = scanner.nextLine();
@@ -130,29 +135,33 @@ public class LibrarySystem {
         displayBooks(foundBooks);
     }
 
+    // Method to display all books
     private void displayAllBooks() {
         List<Book> allBooks = library.getAllBooks();
         displayBooks(allBooks);
     }
 
+    // Method to display available books
     private void displayAvailableBooks() {
         List<Book> availableBooks = library.getAvailableBooks();
         displayBooks(availableBooks);
     }
 
+    // Method to borrow a book
     private void borrowBook() {
         System.out.print("Enter ISBN of the book to borrow: ");
         String isbn = scanner.nextLine();
         library.borrowBook(isbn);
     }
 
+    // Method to return a book
     private void returnBook() {
         System.out.print("Enter ISBN of the book to return: ");
         String isbn = scanner.nextLine();
         library.returnBook(isbn);
     }
 
-
+    // Method to display list of books
     private void displayBooks(List<Book> books) {
         if (books.isEmpty()) {
             System.out.println("No books found.");
@@ -167,6 +176,7 @@ public class LibrarySystem {
             }
         }
     }
+    // Method to authenticate user as librarian or library user
     void authenticateUser() {
         System.out.print("Are you a librarian or a library user? (librarian/user): ");
         String userType = scanner.nextLine();
