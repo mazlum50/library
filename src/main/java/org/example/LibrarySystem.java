@@ -13,28 +13,25 @@ public class LibrarySystem {
         this.scanner = new Scanner(System.in);
         this.isLibrarian = false;
     }
-
-
     public void displayMenu() {
-        System.out.println("\n===== Library Management System =====");
+        System.out.println("\n===== Bibliotheksverwaltungssystem =====");
         if (isLibrarian) {
-            System.out.println("1. Add a new book");
-            System.out.println("2. Remove a book");
-            System.out.println("9. Switch to Library User");
+            System.out.println("1. Ein neues Buch hinzufügen");
+            System.out.println("2. Ein Buch entfernen");
+            System.out.println("9. Zum Bibliotheksnutzer wechseln");
         } else {
-            System.out.println("1. Search for books by title");
-            System.out.println("2. Search for books by author");
-            System.out.println("3. Display all books");
-            System.out.println("4. Display available books");
-            System.out.println("5. Borrow a book");
-            System.out.println("6. Return a book");
-            System.out.println("9. Switch to Librarian");
+            System.out.println("1. Nach Büchern nach Titel suchen");
+            System.out.println("2. Nach Büchern nach Autor suchen");
+            System.out.println("3. Alle Bücher anzeigen");
+            System.out.println("4. Verfügbare Bücher anzeigen");
+            System.out.println("5. Ein Buch ausleihen");
+            System.out.println("6. Ein Buch zurückgeben");
+            System.out.println("9. Zum Bibliothekar wechseln");
         }
-        System.out.println("0. Exit");
-        System.out.print("Enter your choice: ");
-    }
+        System.out.println("0. Beenden");
+        System.out.print("Geben Sie Ihre Wahl ein: ");
 
-    // Method to handle user inputs and actions
+    }
     public void handleUserInput() {
         int choice;
         do {
@@ -81,92 +78,77 @@ public class LibrarySystem {
                     switchUserRole();
                     break;
                 case 0:
-                    System.out.println("Exiting Library System. Goodbye!");
+                    System.out.println("Bibliothekssystem wird beendet. Auf Wiedersehen!");
                     break;
                 default:
-                    System.out.println("Invalid choice. Please enter a valid option.");
+                    System.out.println("Ungültige Wahl. Bitte geben Sie eine gültige Option ein.");
             }
         } while (choice != 0);
     }
-
-    // Method to switch user role between librarian and user
     private void switchUserRole() {
         isLibrarian = !isLibrarian;
         if (isLibrarian) {
-            System.out.println("Switched to Librarian role.");
+            System.out.println("Zum Bibliothekar gewechselt.");
         } else {
-            System.out.println("Switched to Library User role.");
+            System.out.println("Zum Bibliotheksnutzer gewechselt.");
         }
     }
-
-    // Method to add a new book
     private void addBook() {
-        System.out.print("Enter title of the book: ");
+        System.out.print("Geben Sie den Titel des Buches ein: ");
         String title = scanner.nextLine();
-        System.out.print("Enter author of the book: ");
+        System.out.print("Geben Sie den Autor des Buches ein: ");
         String author = scanner.nextLine();
-        System.out.print("Enter unique ID of the book: ");
+        System.out.print("Geben Sie die ISBN des Buches ein: ");
         String uniqueId = scanner.nextLine();
 
         Book newBook = new Book(title, author, uniqueId);
         library.addBook(newBook);
     }
-
-    // Method to remove a book
     private void removeBook() {
-        System.out.print("Enter ISBN of the book to remove: ");
+        System.out.print("Geben Sie die ISBN des zu entfernenden Buches ein: ");
         String uniqueId = scanner.nextLine();
         library.removeBook(uniqueId);
     }
-
-    // Method to search for books by title
     private void searchByTitle() {
-        System.out.print("Enter title to search: ");
+        System.out.print("Titel eingeben, um zu suchen: ");
         String title = scanner.nextLine();
         List<Book> foundBooks = library.findBooksByTitle(title);
         displayBooks(foundBooks);
     }
-
-    // Method to search for books by author
     private void searchByAuthor() {
-        System.out.print("Enter author to search: ");
+        System.out.print("Autor eingeben, um zu suchen: ");
         String author = scanner.nextLine();
         List<Book> foundBooks = library.findBooksByAuthor(author);
         displayBooks(foundBooks);
     }
 
-    // Method to display all books
     private void displayAllBooks() {
         List<Book> allBooks = library.getAllBooks();
         displayBooks(allBooks);
     }
 
-    // Method to display available books
     private void displayAvailableBooks() {
         List<Book> availableBooks = library.getAvailableBooks();
         displayBooks(availableBooks);
     }
 
-    // Method to borrow a book
     private void borrowBook() {
-        System.out.print("Enter ISBN of the book to borrow: ");
+        System.out.print("ISBN des Buches eingeben, um auszuleihen: ");
         String isbn = scanner.nextLine();
         library.borrowBook(isbn);
     }
 
-    // Method to return a book
     private void returnBook() {
         System.out.print("Enter ISBN of the book to return: ");
         String isbn = scanner.nextLine();
         library.returnBook(isbn);
     }
 
-    // Method to display list of books
     private void displayBooks(List<Book> books) {
         if (books.isEmpty()) {
             System.out.println("No books found.");
         } else {
-            System.out.println("===== List of Books =====");
+            System.out.println("===== Liste der Bücher =====");
             for (Book book : books) {
                 System.out.println("Title: " + book.getTitle());
                 System.out.println("Author: " + book.getAuthor());
@@ -176,11 +158,11 @@ public class LibrarySystem {
             }
         }
     }
-    // Method to authenticate user as librarian or library user
+
     void authenticateUser() {
-        System.out.print("Are you a librarian or a library user? (librarian/user): ");
+        System.out.print("Sind Sie ein Bibliothekar oder ein Bibliotheksnutzer? (Bibliothekar/Nutzer): ");
         String userType = scanner.nextLine();
-        isLibrarian = userType.equalsIgnoreCase("librarian");
-        System.out.println("Welcome to the Library Management System!");
+        isLibrarian = userType.equalsIgnoreCase("Bibliothekar");
+        System.out.println("Willkommen im Bibliotheksverwaltungssystem!");
     }
 }

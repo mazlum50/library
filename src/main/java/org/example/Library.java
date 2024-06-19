@@ -54,7 +54,6 @@ public class Library {
         }
         return availableBooks;
     }
-
     public void borrowBook(String isbn) {
         for (Book book : books) {
             if (book.getIsbn().equals(isbn)) {
@@ -62,14 +61,13 @@ public class Library {
                     book.toggleAvailability();
                     saveInventory(); // Save inventory after borrowing a book
                 } else {
-                    System.out.println("Book with ISBN " + isbn + " is not available for borrowing.");
+                    System.out.println("Buch mit der ISBN " + isbn + " ist nicht zum Ausleihen verfügbar.");
                 }
                 return;
             }
         }
-        System.out.println("Book with ID " + isbn + " not found.");
+        System.out.println( "Buch mit der ID " + isbn + " nicht gefunden.");
     }
-
     public void returnBook(String isbn) {
         for (Book book : books) {
             if (book.getIsbn().equals(isbn)) {
@@ -77,32 +75,29 @@ public class Library {
                     book.toggleAvailability();
                     saveInventory(); // Save inventory after returning a book
                 } else {
-                    System.out.println("Book with ISBN " + isbn + " is already available.");
+                    System.out.println("Buch mit der ISBN " + isbn + " ist bereits verfügbar.");
                 }
                 return;
             }
         }
-        System.out.println("Book with ISBN " + isbn + " not found.");
+        System.out.println("Buch mit der ISBN " + isbn + " nicht gefunden.");
     }
-
     private void loadInventory() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(inventoryFilePath))) {
             books = (List<Book>) ois.readObject();
-            System.out.println("Inventory loaded successfully.");
+            System.out.println("Data erfolgreich geladen.");
         } catch (FileNotFoundException e) {
-            System.out.println("No inventory file found. Starting with an empty inventory.");
+            System.out.println( "Keine Data gefunden. Beginne mit einem leeren Data.");
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error loading inventory: " + e.getMessage());
+            System.out.println("Fehler bei Data  Laden  " + e.getMessage());
         }
     }
-
-    // Method to save inventory to file
     private void saveInventory() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(inventoryFilePath))) {
             oos.writeObject(books);
-            System.out.println("Inventory saved successfully.");
+            System.out.println("Data erfolgreich gespeichert.");
         } catch (IOException e) {
-            System.out.println("Error saving inventory: " + e.getMessage());
+            System.out.println("Fehler bei Data  Speichern : " + e.getMessage());
         }
     }
 }
