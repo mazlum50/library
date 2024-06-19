@@ -2,13 +2,13 @@ package org.example;
 import java.util.List;
 import java.util.Scanner;
 
-public class LibrarySystem {
+public class LibraryUI {
     private final Library library;
     private static final String INVENTORY_FILE_PATH = "data.json";
     private final Scanner scanner;
     private boolean isLibrarian;
 
-    public LibrarySystem() {
+    public LibraryUI() {
         this.library = new Library(INVENTORY_FILE_PATH);
         this.scanner = new Scanner(System.in);
         this.isLibrarian = false;
